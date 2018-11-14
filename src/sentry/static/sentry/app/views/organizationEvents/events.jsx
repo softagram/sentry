@@ -11,9 +11,10 @@ import EventsChart from 'app/views/organizationEvents/eventsChart';
 import EventsTable from 'app/views/organizationEvents/eventsTable';
 import Pagination from 'app/components/pagination';
 import PreviewFeature from 'app/components/previewFeature';
-import SearchBar from 'app/components/searchBar';
 import SentryTypes from 'app/sentryTypes';
 import withOrganization from 'app/utils/withOrganization';
+
+import SearchBar from './searchBar';
 
 class OrganizationEvents extends AsyncView {
   static propTypes = {
@@ -87,9 +88,9 @@ class OrganizationEvents extends AsyncView {
         <Flex align="center" justify="space-between" mb={2}>
           <HeaderTitle>{t('Events')}</HeaderTitle>
           <StyledSearchBar
-            query={location.query && location.query.query}
-            placeholder={t('Search for events, users, tags, and everything else.')}
+            query={(location.query && location.query.query) || ''}
             onSearch={this.handleSearch}
+            organization={organization}
           />
         </Flex>
 
