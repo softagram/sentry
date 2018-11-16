@@ -259,7 +259,7 @@ export default class OrganizationDiscover extends React.Component {
   renderSidebarNav() {
     const {view} = this.state;
     const views = [
-      {id: 'query', title: t('Query')},
+      {id: 'query', title: t('New Query')},
       {id: 'saved', title: t('Saved queries')},
     ];
 
@@ -301,8 +301,43 @@ export default class OrganizationDiscover extends React.Component {
 
     return (
       <DiscoverContainer>
+        <TopBar>
+          <MultipleProjectSelector
+            value={currentQuery.projects}
+            organization={organization}
+            projects={projects}
+            onChange={val => this.updateField('projects', val)}
+            onUpdate={this.runQuery}
+          />
+          <HeaderSeparator />
+          <TimeRangeSelector
+            showAbsolute={true}
+            showRelative={true}
+            useUtc={true}
+            start={start}
+            end={end}
+            relative={currentQuery.range}
+            onChange={this.handleUpdateTime}
+            onUpdate={this.runQuery}
+          />
+          <HeaderSeparator />
+        </TopBar>
+        <Body>
+          <BodyContent>
+            {shouldDisplayResult && (
+              <Result
+                data={data}
+                savedQuery={savedQuery}
+                onToggleEdit={toggleEditMode}
+                onFetchPage={this.onFetchPage}
+              />
+            )}
+            {!shouldDisplayResult && <Intro updateQuery={this.updateFields} />}
+            {isFetchingQuery && <ResultLoading />}
+            <EarlyAdopterMessage />
+          </BodyContent>
+        </Body>
         <Sidebar>
-          <PageTitle>{t('Discover')}</PageTitle>
           {this.renderSidebarNav()}
           {view === 'saved' && (
             <SavedQueryWrapper>
@@ -337,42 +372,6 @@ export default class OrganizationDiscover extends React.Component {
               </QueryPanel>
             )}
         </Sidebar>
-        <Body>
-          <TopBar>
-            <MultipleProjectSelector
-              value={currentQuery.projects}
-              organization={organization}
-              projects={projects}
-              onChange={val => this.updateField('projects', val)}
-              onUpdate={this.runQuery}
-            />
-            <HeaderSeparator />
-            <TimeRangeSelector
-              showAbsolute={true}
-              showRelative={true}
-              useUtc={true}
-              start={start}
-              end={end}
-              relative={currentQuery.range}
-              onChange={this.handleUpdateTime}
-              onUpdate={this.runQuery}
-            />
-            <HeaderSeparator />
-          </TopBar>
-          <BodyContent>
-            {shouldDisplayResult && (
-              <Result
-                data={data}
-                savedQuery={savedQuery}
-                onToggleEdit={toggleEditMode}
-                onFetchPage={this.onFetchPage}
-              />
-            )}
-            {!shouldDisplayResult && <Intro updateQuery={this.updateFields} />}
-            {isFetchingQuery && <ResultLoading />}
-            <EarlyAdopterMessage />
-          </BodyContent>
-        </Body>
       </DiscoverContainer>
     );
   }
