@@ -63,8 +63,6 @@ export const MENU_CLOSE_DELAY = 200;
 
 export const DEFAULT_STATS_PERIOD = '14d';
 
-export const DEFAULT_USE_UTC = true;
-
 export const DEFAULT_RELATIVE_PERIODS = {
   '24h': t('Last 24 hours'),
   '7d': t('Last 7 days'),
